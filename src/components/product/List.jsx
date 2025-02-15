@@ -1,6 +1,6 @@
 import React from "react";
 
-const List = ({ productList, handleDelete }) => {
+const List = React.memo(({ productList, handleDelete }) => {
   return (
     <div>
       {productList.length > 0 ? (
@@ -51,6 +51,6 @@ const List = ({ productList, handleDelete }) => {
       )}
     </div>
   );
-};
+});
 
 export default List;
