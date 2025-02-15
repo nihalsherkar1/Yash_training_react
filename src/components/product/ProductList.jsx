@@ -32,10 +32,18 @@ const ProductList = () => {
     localStorage.setItem("product", JSON.stringify(updateList));
   };
 
+  const handleUpdate = (index) => {
+    alert("Product updating of " + index);
+  };
+
   return (
     <div className="shadow rounded border p-4   ">
       <h1 className="text-center mb-3">Product List</h1>
-      <List productList={productList} handleDelete={handleDelete} />
+      <List
+        productList={productList}
+        handleDelete={handleDelete}
+        handleUpdate={handleUpdate}
+      />
     </div>
   );
 };

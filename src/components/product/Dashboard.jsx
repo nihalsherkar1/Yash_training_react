@@ -2,11 +2,12 @@ import React from "react";
 import style from "../../css/Dashboard.module.css";
 import ProductForm from "./ProductForm";
 import ProductList from "./ProductList";
+import Navbar from "./Navbar";
 
 const Dashboard = () => {
   return (
     <>
-      <h1 className={`${style.main} text-center   `}>Inventory App</h1>
+      {/* <h1 className={`${style.main} text-center   `}>Inventory App</h1> */}
 
       <div className="p-2">
         <div className=" row g-4   ">
