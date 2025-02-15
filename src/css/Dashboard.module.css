@@ -6,3 +6,14 @@
   border: 1px solid black !important;
   color: red;
 }
+
+@media (max-width: 768px) {
+  .responsive_form {
+    height: auto !important;
+  }
+}
+@media (min-width: 768px) {
+  .responsive_form {
+    height: 50vh !important;
+  }
+}

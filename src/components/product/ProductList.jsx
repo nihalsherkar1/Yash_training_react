@@ -1,75 +1,85 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 const ProductList = () => {
+  const [productList, setProductList] = useState([]);
+
+  useEffect(() => {
+    const fetchData = () => {
+      const storedData = localStorage.getItem("product");
+
+      if (storedData) {
+        const parseData = JSON.parse(storedData);
+        setProductList(parseData);
+      }
+    };
+
+    fetchData(); // fetch data on mount
+
+    //listen for storage change in other tabs
+    window.addEventListener("storage", fetchData);
+
+    return () => {
+      window.removeEventListener("storage", fetchData);
+    };
+  }, []);
+
+  const handleDelete = (index) => {
+    const updateList = productList.filter((_, i) => i !== index);
+
+    setProductList(updateList);
+
+    localStorage.setItem("product", JSON.stringify(updateList));
+  };
+
   return (
-    <div className="shadow rounded border p-5   ">
-      <h1 className="text-center">Product List</h1>
-      <div className="container p-3      ">
-        <table class="table">
-          <thead>
-            <tr>
-              <th scope="col">#</th>
-              <th scope="col">First</th>
-              <th scope="col">Last</th>
-              <th scope="col">Handle</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <th scope="row">1</th>
-              <td>Mark</td>
-              <td>Otto</td>
-              <td>@mdo</td>
-            </tr>
-            <tr>
-              <th scope="row">2</th>
-              <td>Jacob</td>
-              <td>Thornton</td>
-              <td>@fat</td>
-            </tr>
-            <tr>
-              <th scope="row">3</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">4</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">5</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">6</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">7</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">8</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">9</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-            <tr>
-              <th scope="row">10</th>
-              <td colspan="2">Larry the Bird</td>
-              <td>@twitter</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
+    <div className="shadow rounded border p-4   ">
+      <h1 className="text-center mb-3">Product List</h1>
+      {productList.length > 0 ? (
+        <div className=" table-responsive     ">
+          <table className="table">
+            <thead>
+              <tr>
+                <th scope="col">#</th>
+                <th scope="col">Product name</th>
+                <th scope="col">Price</th>
+                <th scope="col">Quantity</th>
+                <th scope="col">Description</th>
+                <th scope="col">Date</th>
+                <th scope="col">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {productList.map((product, index) => (
+                <tr key={index}>
+                  <th scope="row">{index + 1}</th>
+                  <td>{product.productName}</td>
+                  <td>{product.price}</td>
+                  <td>{product.quantity}</td>
+                  <td>
+                    {product.description.length > 40
+                      ? product.description.substring(0, 35) + "..."
+                      : product.description}
+                  </td>
+                  <td>{product.date}</td>
+                  <td>
+                    <div>
+                      <button className="btn btn-primary mx-2">Update</button>
+                      <button
+                        className="btn btn-danger"
+                        onClick={() => handleDelete(index)}
+                      >
+                        Delete
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      ) : (
+        <h2 className="text-center">No products found</h2>
+      )}
     </div>
   );
 };

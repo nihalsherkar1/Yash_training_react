@@ -8,18 +8,14 @@ const Dashboard = () => {
     <>
       <h1 className={`${style.main} text-center   `}>Inventory App</h1>
 
-      <div className="d-flex  flex-wrap     ">
-        <div
-          className="  "
-          style={{ height: "100vh", width: "30%", marginLeft: "15px" }}
-        >
-          <ProductForm />
-        </div>
-        <div
-          className=" "
-          style={{ height: "100vh", width: "68%", marginLeft: "15px" }}
-        >
-          <ProductList />
+      <div className="p-2">
+        <div className=" row g-4   ">
+          <div className=" col-12  col-lg-4 col-md-4 ">
+            <ProductForm />
+          </div>
+          <div className=" col-12 col-lg-8 col-md-4">
+            <ProductList />
+          </div>
         </div>
       </div>
     </>
