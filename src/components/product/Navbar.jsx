@@ -1,6 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    navigate("/login");
+  };
   return (
     <div>
       <nav className="navbar navbar-expand-lg navbar-dark bg-primary">
@@ -39,6 +45,11 @@ const Navbar = () => {
                   <li>
                     <a class="dropdown-item" href="/login">
                       Login
+                    </a>
+                  </li>
+                  <li>
+                    <a class="dropdown-item" onClick={handleLogout}>
+                      Logout
                     </a>
                   </li>
                   <li>
