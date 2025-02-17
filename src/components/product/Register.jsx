@@ -7,7 +7,7 @@ const Register = () => {
   const navigate = useNavigate();
 
   const registerSchema = Yup.object({
-    name: Yup.string().required("Username is required"),
+    userName: Yup.string().required("Username is required"),
     email: Yup.string().email("Invalid email").required("Email is required"),
     password: Yup.string()
       .min(6, "Password must be at least 6 characters")
@@ -24,46 +24,35 @@ const Register = () => {
 
   const formik = useFormik({
     initialValues: {
-      name: "",
+      userName: "",
       email: "",
       password: "",
       role: "USER",
     },
     validationSchema: registerSchema,
-    onSubmit: (values) => {
-      let users = JSON.parse(localStorage.getItem("data")) || [];
+    onSubmit: async (values) => {
+      try {
+        const response = await fetch("http://localhost:8080/register", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(values),
+        });
 
-      const userExists = users.some((user) => user.email === values.email);
+        const saveData = await response.json();
 
-      if (userExists) {
-        errorToast("This User already exists");
-      } else {
-        users.push(values);
-        localStorage.setItem("data", JSON.stringify(users));
-        successToast("User registered successfully");
-        navigate("/login");
+        if (!response.ok) {
+          errorToast("User already registered");
+        } else {
+          successToast("User registered successfully");
+          navigate("/");
+        }
+      } catch (error) {
+        console.error("Error:", error);
       }
     },
   });
-
-  //   const [data, setData] = useState({
-  //     name: "",
-  //     email: "",
-  //     password: "",
-  //     role: "USER",
-  //   });
-
-  //   const handleChange = (e) => {
-  //     const { name, value } = e.target;
-  //     setData((prevData) => ({
-  //       ...prevData,
-  //       [name]: value,
-  //     }));
-  //   };
-
-  //   const handleSubmit = (e) => {
-  //     e.preventDefault();
-  //   };
 
   return (
     <div className="container">
@@ -81,16 +70,18 @@ const Register = () => {
               <input
                 type="text"
                 className={`form-control ${
-                  formik.touched.name && formik.errors.name ? "is-invalid" : ""
+                  formik.touched.userName && formik.errors.userName
+                    ? "is-invalid"
+                    : ""
                 } `}
-                id="name"
+                id="userName"
                 placeholder="Enter Name"
-                name="name"
+                name="userName"
                 onChange={formik.handleChange}
-                value={formik.values.name}
+                value={formik.values.userName}
               />
-              {formik.touched.name && formik.errors.name && (
-                <div className="text-danger">{formik.errors.name}</div>
+              {formik.touched.userName && formik.errors.userName && (
+                <div className="text-danger">{formik.errors.userName}</div>
               )}
             </div>
             <div className="form-group mb-3">
@@ -159,7 +150,7 @@ const Register = () => {
             <div className="text-center mt-2 d-flex">
               <a href="#">Forgot Password?</a>
               <span className="ms-auto">
-                <a href="/login"> Login </a>
+                <a href="/"> Login </a>
               </span>
             </div>
           </form>

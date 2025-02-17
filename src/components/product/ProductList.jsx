@@ -1,27 +1,31 @@
 import React, { useEffect, useState } from "react";
 import List from "./List";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const ProductList = () => {
   const [productList, setProductList] = useState([]);
 
   useEffect(() => {
-    const fetchData = () => {
-      const storedData = localStorage.getItem("product");
+    const fetchData = async () => {
+      const response = await fetch("http://localhost:8080/product");
 
-      if (storedData) {
-        const parseData = JSON.parse(storedData);
-        setProductList(parseData);
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
       }
+
+      const data = await response.json();
+      setProductList(data);
+      console.log(data);
     };
 
     fetchData(); // fetch data on mount
 
-    //listen for storage change in other tabs
-    window.addEventListener("storage", fetchData);
+    // //listen for storage change in other tabs
+    // window.addEventListener("storage", fetchData);
 
-    return () => {
-      window.removeEventListener("storage", fetchData);
-    };
+    // return () => {
+    //   window.removeEventListener("storage", fetchData);
+    // };
   }, []);
 
   const handleDelete = (index) => {
@@ -37,7 +41,7 @@ const ProductList = () => {
   };
 
   return (
-    <div className="shadow rounded border p-4   ">
+    <div className="shadow rounded border p-5   ">
       <h1 className="text-center mb-3">Product List</h1>
       <List
         productList={productList}

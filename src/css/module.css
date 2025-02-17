@@ -1,1 +1,14 @@
- 
+.table-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 500px; /* Ensure fixed height */
+}
+
+.table-content {
+  flex: 1; /* Push pagination down */
+  overflow-y: auto;
+}
+.pagination {
+  text-align: center;
+  padding: 10px;
+}

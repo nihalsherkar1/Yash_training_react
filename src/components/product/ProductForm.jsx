@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import style from "../../css/Dashboard.module.css";
 
 const ProductForm = () => {
@@ -8,9 +8,11 @@ const ProductForm = () => {
     quantity: "",
     description: "",
     date: "",
+    category: "",
   });
 
   const [productList, setProductList] = useState([]);
+  const [categories, setCategories] = useState([]);
 
   const handleOnChange = (e) => {
     const { name, value } = e.target;
@@ -21,37 +23,73 @@ const ProductForm = () => {
     }));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
 
-    //Fetch existing product list
-    const storedProducts = localStorage.getItem("product");
+    try {
+      const response = await fetch("http://localhost:8080/product/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(product),
+      });
 
-    const productArrayList = storedProducts ? JSON.parse(storedProducts) : [];
+      const contentType = response.headers.get("Content-Type");
 
-    const updated_product_list = [...productArrayList, product];
+      if (!response.ok) {
+        throw new Error("Failed to save data");
+      }
 
-    localStorage.setItem("product", JSON.stringify(updated_product_list));
+      if (contentType && contentType.includes("application/json")) {
+        const saved_data = await response.json();
+        setProductList((prev) => [...prev, saved_data]);
+      } else {
+        const textResponse = await response.text();
+        console.warn("Received non-JSON response:", textResponse);
+      }
 
-    // Update the product List
-    setProductList(updated_product_list);
+      setProduct({
+        productName: "",
+        price: "",
+        quantity: "",
+        description: "",
+        date: "",
+        category: "",
+      });
+      alert("Product data saved successfully! 🎉");
+    } catch (error) {
+      console.error("Error:", error.message);
+    }
+
     // Reset form after submission
-    setProduct({
-      productName: "",
-      price: "",
-      quantity: "",
-      description: "",
-      date: "",
-    });
-    alert("Product data saved successfully! 🎉");
   };
 
+  useEffect(() => {
+    const fetch_data = async () => {
+      try {
+        const response = await fetch("http://localhost:8080/category");
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+
+        const json = await response.json();
+        setCategories(json);
+        console.log(json);
+      } catch (error) {
+        console.error(error.message);
+      }
+    };
+    fetch_data();
+  }, []);
+
   return (
-    <div className=" shadow rounded border p-4   ">
+    <div className=" shadow rounded border p-5   ">
       <h1 className="text-center">ProductForm</h1>
 
       <form
-        className={`mb-3 ${style.responsive_form} `}
+        className={`mb-5  ${style.responsive_form} `}
         style={{ height: "50vh" }}
         onSubmit={handleSubmit}
       >
@@ -106,7 +144,7 @@ const ProductForm = () => {
           <label htmlFor="quantity" className="form-label fw-bold">
             Description:
           </label>
-          <input
+          <textarea
             type="text"
             className="form-control"
             id="description"
@@ -132,8 +170,29 @@ const ProductForm = () => {
             name="date"
           />
         </div>
+        {/* {Category} */}
+        <div className="mb-2 ">
+          <label htmlFor="quantity" className="form-label fw-bold">
+            Category:
+          </label>
+          <select
+            name="category"
+            id="category"
+            className="form-select"
+            aria-label="select category"
+            onChange={handleOnChange}
+            value={product.category}
+          >
+            <option value="">Select a category</option>
+            {categories.map((category) => (
+              <option key={category.categoryId} value={category.categoryName}>
+                {category.categoryName}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        <div className="text-center mt-5">
+        <div className="text-center mt-3  ">
           <button type="submit" className="btn  btn-primary">
             Add Product
           </button>

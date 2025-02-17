@@ -1,3 +1,6 @@
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEllipsisVertical } from "@fortawesome/free-solid-svg-icons";
+
 import React from "react";
 import { useNavigate } from "react-router-dom";
 
@@ -36,14 +39,14 @@ const Navbar = () => {
                   data-bs-toggle="dropdown"
                   aria-expanded="false"
                 >
-                  More
+                  <FontAwesomeIcon icon={faEllipsisVertical} />
                 </a>
                 <ul
                   class="dropdown-menu dropdown-menu-dark"
                   aria-labelledby="navbarDarkDropdownMenuLink"
                 >
                   <li>
-                    <a class="dropdown-item" href="/login">
+                    <a class="dropdown-item" href="/">
                       Login
                     </a>
                   </li>

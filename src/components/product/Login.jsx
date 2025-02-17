@@ -39,7 +39,7 @@ const Login = () => {
       if (user) {
         successToast("Login successful!!");
         setTimeout(() => {
-          navigate("/");
+          navigate("/dashboard");
         }, 2000);
       } else {
         errorToast("No user found, Please register!!");
