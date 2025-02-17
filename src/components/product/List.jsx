@@ -5,20 +5,20 @@ import { faTrashCan, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import "../../css/module.css";
 
 const List = React.memo(({ productList, handleDelete, handleUpdate }) => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
+  // const [currentPage, setCurrentPage] = useState(1);
+  // const itemsPerPage = 5;
 
-  // calculate total pages
-  const totalPages = Math.ceil(productList.length / itemsPerPage);
+  // // calculate total pages
+  // const totalPages = Math.ceil(productList.length / itemsPerPage);
 
-  //Get Products for the current page
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentProducts = productList.slice(indexOfFirstItem, indexOfLastItem);
+  // //Get Products for the current page
+  // const indexOfLastItem = currentPage * itemsPerPage;
+  // const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  // const currentProducts = productList.slice(indexOfFirstItem, indexOfLastItem);
 
-  const handlePageChange = useCallback((pageNumber) => {
-    setCurrentPage(pageNumber);
-  });
+  // const handlePageChange = useCallback((pageNumber) => {
+  //   setCurrentPage(pageNumber);
+  // });
 
   return (
     <div>
@@ -39,7 +39,7 @@ const List = React.memo(({ productList, handleDelete, handleUpdate }) => {
                 </tr>
               </thead>
               <tbody>
-                {currentProducts.map((product, index) => (
+                {productList.map((product, index) => (
                   <tr key={index}>
                     <th scope="row">{product.productId}</th>
                     <td>{product.productName}</td>
@@ -74,7 +74,7 @@ const List = React.memo(({ productList, handleDelete, handleUpdate }) => {
             </table>
 
             {/* Pagination */}
-            <div className="d-flex justify-content-center mt-3">
+            {/* <div className="d-flex justify-content-center mt-3">
               <nav>
                 <ul className="pagination    ">
                   <li
@@ -118,7 +118,7 @@ const List = React.memo(({ productList, handleDelete, handleUpdate }) => {
                   </li>
                 </ul>
               </nav>
-            </div>
+            </div> */}
           </div>
         </div>
       ) : (
