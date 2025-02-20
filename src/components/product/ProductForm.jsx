@@ -47,12 +47,10 @@ const ProductForm = () => {
   };
 
   return (
-    <div className=" shadow rounded border p-4   ">
-      <h1 className="text-center">ProductForm</h1>
-
+    <div className=" shadow   border p-3   ">
+      <h4 className="text-center">ProductForm</h4>
       <form
-        className={`mb-3 ${style.responsive_form} `}
-        style={{ height: "50vh" }}
+        className="p-2"
         onSubmit={handleSubmit}
       >
         <div className="mb-2 ">
@@ -133,8 +131,8 @@ const ProductForm = () => {
           />
         </div>
 
-        <div className="text-center mt-5">
-          <button type="submit" className="btn  btn-primary">
+        <div className="text-center mt-2">
+          <button type="submit" className="btn  btn-outline-primary">
             Add Product
           </button>
         </div>
